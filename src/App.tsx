@@ -3,6 +3,7 @@ import Labs from "./Labs";
 import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
 import Kanbas from "./Kanbas";
 import "./index.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
