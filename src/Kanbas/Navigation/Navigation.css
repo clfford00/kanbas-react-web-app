@@ -1,0 +1,16 @@
+
+.list-group-item .nav-icon {
+  color: red; /* Default color for all icons */
+}
+
+.list-group-item.active .nav-icon {
+  color: red !important;
+}
+
+.list-group-item.account .nav-icon {
+  color: white !important; /* Specific color (white) for the Account icon */
+}
+
+.list-group-item.account.active .nav-icon {
+  color: white !important;
+}

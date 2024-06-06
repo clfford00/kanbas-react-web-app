@@ -1,15 +1,33 @@
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+import "./index.css";
+
 export default function CoursesNavigation() {
+  const location = useLocation();
+  const links = [
+    { id: "home", label: "Home", path: "Home" },
+    { id: "modules", label: "Modules", path: "Modules" },
+    { id: "piazza", label: "Piazza", path: "Piazza" },
+    { id: "zoom", label: "Zoom", path: "Zoom" },
+    { id: "assignments", label: "Assignments", path: "Assignments" },
+    { id: "quizzes", label: "Quizzes", path: "Quizzes" },
+    { id: "grades", label: "Grades", path: "Grades" }
+  ];
+
   return (
-    <ul id="wd-courses-navigation">
-      <li><a id="wd-course-home-link"    href="#/Kanbas/Courses/1234/Home">Home</a></li>
-      <li><a id="wd-course-modules-link" href="#/Kanbas/Courses/1234/Modules">Modules
-        </a></li>
-      <li><a id="wd-course-piazza-link"  href="#/Kanbas/Courses/1234/Piazza">Piazza</a></li>
-      <li><a id="wd-course-zoom-link"    href="#/Kanbas/Courses/1234/Zoom">Zoom</a></li>
-      <li><a id="wd-course-quizzes-link" href="#/Kanbas/Courses/1234/Assignments">
-          Assignments</a></li>
-      <li><a id="wd-course-assignments-link" href="#/Kanbas/Courses/1234/Quizzes">Quizzes
-        </a></li>
-      <li><a id="wd-course-grades-link"  href="#/Kanbas/Courses/1234/Grades">Grades</a></li>
+    <ul id="wd-courses-navigation" className="list-group fs-5 rounded-0">
+      {links.map(link => (
+        <li key={link.id}>
+          <Link
+            to={link.path}
+            className={`list-group-item ${
+              location.pathname.includes(link.path) ? "active" : "text-danger"
+            } border-0`}
+          >
+            {link.label}
+          </Link>
+        </li>
+      ))}
     </ul>
-);}
+  );
+}
