@@ -1,0 +1,12 @@
+.border-green {
+    border-left: 5px solid green;
+}
+
+.wd-title {
+    background-color: rgb(170, 170, 170);
+}
+
+.link {
+    color:black;
+    text-decoration: none;
+}
