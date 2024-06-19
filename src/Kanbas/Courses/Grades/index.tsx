@@ -1,61 +1,105 @@
-import React from 'react';
-import { FaFileImport, FaFileExport } from 'react-icons/fa';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-const gradesData = [
-  { name: "Alexander Anadiotis", A1: "1%", A2: "10%", A3: "30%", A4: "13%" },
-  { name: "Max MacAvoy", A1: "100%", A2: "100%", A3: "100%", A4: "100%" },
-  { name: "Samreen Ansari", A1: "100%", A2: "100%", A3: "100%", A4: "100%" },
-  { name: "Han Bao", A1: "100%", A2: "100%", A3: "100%", A4: "100%" },
-  { name: "Mahi Sai Srinivas Bobbili", A1: "100%", A2: "100%", A3: "100%", A4: "100%" },
-  { name: "Siran Cao", A1: "100%", A2: "100%", A3: "100%", A4: "100%" }
-];
+import GradesControls from "./GradesControls";
+import { CiSearch, CiFilter } from "react-icons/ci";
+import * as db from "../../Database";
+import { useParams } from "react-router";
+// import "./styles.css";
 
 export default function Grades() {
+  const { cid } = useParams();
+  const enrollments = db.enrollments.filter((enrollment) => enrollment.course === cid);
+  const assignments = db.assignments.filter((assignment) => assignment.course === cid);
+  const users = db.users.filter((user) =>
+    enrollments.find((enrollment) => enrollment.user === user._id)
+  );
+  const grades = db.grades.filter((grade) =>
+    assignments.find((assignment) => assignment._id === grade.assignment)
+  );
+
   return (
-    <div className="container mt-4">
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="text-danger" style={{ fontSize: '20px' }}>CS1234 React JS &gt; Grades</h2>
-        <div className="d-flex">
-          <button className="btn btn-secondary me-2">
-            <FaFileImport className="me-1" /> Import
-          </button>
-          <div className="dropdown">
-            <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-              <FaFileExport className="me-1" /> Export
-            </button>
-            <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#">Export as CSV</a></li>
-              <li><a className="dropdown-item" href="#">Export as PDF</a></li>
-            </ul>
+    <div id="wd-grades">
+      <div className="container pt-2">
+        <div className="row">
+          <div className="col-12">
+            <GradesControls />
           </div>
         </div>
-      </div>
-      <div className="table-responsive">
-        <table className="table table-striped">
-          <thead>
-            <tr>
-              <th>Student Name</th>
-              <th>A1 SETUP</th>
-              <th>A2 HTML</th>
-              <th>A3 CSS</th>
-              <th>A4 BOOTSTRAP</th>
-            </tr>
-          </thead>
-          <tbody>
-            {gradesData.map((student, index) => (
-              <tr key={index}>
-                <td>{student.name}</td>
-                <td>{student.A1}</td>
-                <td>{student.A2}</td>
-                <td>
-                  <input type="text" className="form-control" defaultValue={student.A3} />
-                </td>
-                <td>{student.A4}</td>
+        <div className="row">
+          <div className="col">
+            <label htmlFor="wd-student-names">
+              <strong>Students</strong>
+            </label>
+          </div>
+          <div className="col">
+            <label htmlFor="wd-assignment-names">
+              <strong>Assignment Names</strong>
+            </label>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div className="d-flex flex-row">
+              <button className="border-0">
+                <CiSearch />
+              </button>
+              <input
+                id="wd-grades-student-names"
+                className="form-select"
+                type="text"
+                placeholder="Search Students"
+              />
+            </div>
+          </div>
+          <div className="col">
+            <div className="d-flex flex-row">
+              <button className="border-0">
+                <CiSearch />
+              </button>
+              <input
+                id="wd-grades-assignment-names"
+                className="form-select"
+                type="text"
+                placeholder="Search Assignments"
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row pt-3">
+          <div className="col-2">
+            <button className="form-control btn btn-secondary">
+              <CiFilter /> Apply Filters
+            </button>
+          </div>
+        </div>
+        <div id="wd-grades-table" className="pt-3">
+          <table className="table table-striped border">
+            <thead className="table-secondary">
+              <tr className="bg-primary">
+                <th>Student Name</th>
+                {assignments.map((assignment) => (
+                  <th className="text-center" key={assignment._id}>{assignment.title}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {users.map((user) => (
+                <tr className="table-row" key={user._id}>
+                  <td>
+                    <span className="text-danger">
+                      {user.firstName} {user.lastName}
+                    </span>
+                  </td>
+                  {grades
+                    .filter((grade) => grade.student === user._id)
+                    .map((grade) => (
+                      <td className="text-center" key={grade._id}>
+                        {grade.grade}%
+                      </td>
+                    ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
