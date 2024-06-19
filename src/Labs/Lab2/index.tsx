@@ -3,6 +3,7 @@ import ReactIconsSampler from "./ReactIconSampler";
 import ScreenSizeLabel from "./ScreenSizeLabel";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TOC from "./TOC"; // Import the TOC component
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 export default function Lab2() {
