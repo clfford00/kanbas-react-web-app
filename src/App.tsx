@@ -1,6 +1,7 @@
 import Labs from "./Labs";
 import { HashRouter, Route, Routes, Navigate } from "react-router-dom";
 import Kanbas from "./Kanbas";
+import React from 'react';
 import "./index.css";
 
 function App() {
