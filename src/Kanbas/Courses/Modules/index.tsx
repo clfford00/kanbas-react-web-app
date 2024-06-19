@@ -4,7 +4,8 @@ import { BsGripVertical } from "react-icons/bs";
 import ModuleControls from "./ModuleControls";
 import ModuleControlButtons from "./ModuleControlButtons";
 import LessonControlButtons from "./LessonControlButtons";
-//import "./styles.css"
+
+
 export default function Modules() {
     const { cid } = useParams();
     const modules = db.modules;

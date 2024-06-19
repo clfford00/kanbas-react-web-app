@@ -1,8 +1,9 @@
-import GradesControls from "./GradesControls";
-import { CiSearch, CiFilter } from "react-icons/ci";
+import React from 'react';
+import { CiSearch, CiFilter } from 'react-icons/ci';
 import * as db from "../../Database";
 import { useParams } from "react-router";
-// import "./styles.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import GradesControls from "./GradesControls";
 
 export default function Grades() {
   const { cid } = useParams();
@@ -16,90 +17,86 @@ export default function Grades() {
   );
 
   return (
-    <div id="wd-grades">
-      <div className="container pt-2">
-        <div className="row">
-          <div className="col-12">
-            <GradesControls />
-          </div>
+    <div className="container mt-4">
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2 className="text-danger" style={{ fontSize: '20px' }}>CS1234 React JS &gt; Grades</h2>
+        <div className="d-flex">
+          <button className="btn btn-secondary me-2">
+            <CiFilter className="me-1" /> Apply Filters
+          </button>
         </div>
-        <div className="row">
-          <div className="col">
-            <label htmlFor="wd-student-names">
-              <strong>Students</strong>
-            </label>
-          </div>
-          <div className="col">
-            <label htmlFor="wd-assignment-names">
-              <strong>Assignment Names</strong>
-            </label>
-          </div>
+      </div>
+      <GradesControls />
+      <div className="row mb-3">
+        <div className="col">
+          <label htmlFor="wd-student-names">
+            <strong>Students</strong>
+          </label>
         </div>
-        <div className="row">
-          <div className="col">
-            <div className="d-flex flex-row">
-              <button className="border-0">
-                <CiSearch />
-              </button>
-              <input
-                id="wd-grades-student-names"
-                className="form-select"
-                type="text"
-                placeholder="Search Students"
-              />
-            </div>
-          </div>
-          <div className="col">
-            <div className="d-flex flex-row">
-              <button className="border-0">
-                <CiSearch />
-              </button>
-              <input
-                id="wd-grades-assignment-names"
-                className="form-select"
-                type="text"
-                placeholder="Search Assignments"
-              />
-            </div>
-          </div>
+        <div className="col">
+          <label htmlFor="wd-assignment-names">
+            <strong>Assignment Names</strong>
+          </label>
         </div>
-        <div className="row pt-3">
-          <div className="col-2">
-            <button className="form-control btn btn-secondary">
-              <CiFilter /> Apply Filters
+      </div>
+      <div className="row mb-3">
+        <div className="col">
+          <div className="d-flex flex-row">
+            <button className="border-0">
+              <CiSearch />
             </button>
+            <input
+              id="wd-grades-student-names"
+              className="form-select"
+              type="text"
+              placeholder="Search Students"
+            />
           </div>
         </div>
-        <div id="wd-grades-table" className="pt-3">
-          <table className="table table-striped border">
-            <thead className="table-secondary">
-              <tr className="bg-primary">
-                <th>Student Name</th>
-                {assignments.map((assignment) => (
-                  <th className="text-center" key={assignment._id}>{assignment.title}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user) => (
-                <tr className="table-row" key={user._id}>
-                  <td>
-                    <span className="text-danger">
-                      {user.firstName} {user.lastName}
-                    </span>
-                  </td>
-                  {grades
-                    .filter((grade) => grade.student === user._id)
-                    .map((grade) => (
-                      <td className="text-center" key={grade._id}>
-                        {grade.grade}%
-                      </td>
-                    ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="col">
+          <div className="d-flex flex-row">
+            <button className="border-0">
+              <CiSearch />
+            </button>
+            <input
+              id="wd-grades-assignment-names"
+              className="form-select"
+              type="text"
+              placeholder="Search Assignments"
+            />
+          </div>
         </div>
+      </div>
+      <div className="table-responsive">
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              {assignments.map((assignment) => (
+                <th className="text-center" key={assignment._id}>{assignment.title}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user._id}>
+                <td>{user.firstName} {user.lastName}</td>
+                {assignments.map((assignment) => {
+                  const grade = grades.find(
+                    (grade) =>
+                      grade.student === user._id &&
+                      grade.assignment === assignment._id
+                  );
+                  return (
+                    <td className="text-center" key={`${user._id}-${assignment._id}`}>
+                      {grade ? `${grade.grade}%` : 'N/A'}
+                    </td>
+                  );
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
