@@ -1,16 +1,31 @@
+import React, { useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import GreenCheckmark from "./GreenCheckmark";
+import ModuleEditor from "./ModuleEditor";
 
-export default function ModulesControls() {
+export default function ModuleControls(
+  { moduleName, setModuleName, addModule }:
+  { moduleName: string; setModuleName: (title: string) => void; addModule: () => void; }
+) {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <div id="wd-modules-controls" className="text-nowrap">
-      <button id="wd-add-module-btn" className="btn btn-lg btn-danger me-1 float-end">
+      <button
+        id="wd-add-module-btn"
+        className="btn btn-lg btn-danger me-1 float-end"
+        onClick={() => setShowModal(true)}
+      >
         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
         Module
       </button>
       <div className="dropdown d-inline me-1 float-end">
-        <button id="wd-publish-all-btn" className="btn btn-lg btn-secondary dropdown-toggle"
-          type="button" data-bs-toggle="dropdown">
+        <button
+          id="wd-publish-all-btn"
+          className="btn btn-lg btn-secondary dropdown-toggle"
+          type="button"
+          data-bs-toggle="dropdown"
+        >
           <GreenCheckmark />
           Publish All
         </button>
@@ -47,6 +62,14 @@ export default function ModulesControls() {
       <button id="wd-collapse-all" className="btn btn-lg btn-warning me-1 float-end">
         Collapse All
       </button>
+      <ModuleEditor
+        dialogTitle="Add Module"
+        moduleName={moduleName}
+        setModuleName={setModuleName}
+        addModule={addModule}
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+      />
     </div>
   );
 }
