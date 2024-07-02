@@ -6,6 +6,8 @@ import * as db from "./Database";
 import { useState } from "react";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./styles.css";
+import store from "./store";
+import { Provider } from "react-redux";
 
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>(db.courses);
@@ -35,6 +37,7 @@ export default function Kanbas() {
   };
 
   return (
+    <Provider store={store}>
     <div id="wd-kanbas" className="h-100">
       <div className="d-flex h-100">
         <div className="d-none d-md-block bg-black">
@@ -57,9 +60,11 @@ export default function Kanbas() {
             <Route path="Calendar" element={<h1>Calendar</h1>} />
             <Route path="Inbox" element={<h1>Inbox</h1>} />
           </Routes>
+
         </div>
       </div>
     </div>
+  </Provider>
   );
 }
 
