@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams, useNavigate } from "react-router";
+import { useParams } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { BsGripVertical } from "react-icons/bs";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
@@ -13,7 +13,6 @@ import "./styles.css";
 
 export default function Assignments() {
   const { cid } = useParams();
-  const navigate = useNavigate();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
   const dispatch = useDispatch();
 
@@ -26,7 +25,6 @@ export default function Assignments() {
   return (
     <div id="wd-assignments">
       <AssignmentsControls />
-
       <ul id="wd-modules" className="list-group rounded-0 pt-5">
         <li className="wd-module list-group-item p-0 mb-5 fs-5 border-gray">
           <div className="wd-title p-3 ps-2">
@@ -57,9 +55,7 @@ export default function Assignments() {
                           <h5 style={{ color: "black" }}>{assignment.title}</h5>
                           <h6 style={{ color: "black" }}>
                             <span className="text-danger">Multiple Modules</span> |{" "}
-                            <b>Not available until</b> {assignment.available_date} at{" "}
-                            {assignment.available_time} | <b>Due</b> {assignment.due_date} at{" "}
-                            {assignment.due_time} | {assignment.score} pts
+                            <b>Not available until</b> {assignment.available_from} | <b>Due</b> {assignment.due_date} | {assignment.points} pts
                           </h6>
                         </Link>
                       </div>
