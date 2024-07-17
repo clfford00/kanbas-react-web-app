@@ -9,10 +9,51 @@ export default function WorkingWithArrays() {
         due: "2021-09-09",
         completed: false,
     });
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
     const API = `${REMOTE_SERVER}/lab5/todos`;
+
+    const updateTodo = async (todo: { id: string; title: string; description: string; due: string; completed: boolean }) => {
+        try {
+            await fetch(`${API}/${todo.id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(todo)
+            });
+
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            } else {
+                setErrorMessage("An unexpected error occurred");
+            }
+        }
+    };
+
+    const deleteTodo = async (todo: { id: string }) => {
+        try {
+            await fetch(`${API}/${todo.id}`, {
+                method: 'DELETE'
+            });
+        } catch (error: unknown) {
+            if (error instanceof Error) {
+                setErrorMessage(error.message);
+            } else {
+                setErrorMessage("An unexpected error occurred");
+            }
+        }
+    };
+
     return (
         <div id="wd-working-with-arrays">
             <h3>Working with Arrays</h3>
+            {errorMessage && (
+                <div id="wd-todo-error-message" className="alert alert-danger mb-2 mt-2">
+                    {errorMessage}
+                </div>
+            )}
             <h4>Retrieving Arrays</h4>
             <a id="wd-retrieve-todos" className="btn btn-primary" href={API}>
                 Get Todos{" "}
@@ -65,7 +106,8 @@ export default function WorkingWithArrays() {
                 className="form-control w-50"
                 onChange={(e) => setTodo({ ...todo, id: e.target.value })}
             />
-            <hr /> <h3>Updating an Item in an Array</h3>
+            <hr />
+            <h3>Updating an Item in an Array</h3>
             <a
                 href={`${API}/${todo.id}/title/${todo.title}`}
                 className="btn btn-primary float-end"

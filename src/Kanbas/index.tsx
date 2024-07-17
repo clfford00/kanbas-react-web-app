@@ -1,31 +1,46 @@
-import { Routes, Route, Navigate } from "react-router-dom";
-import KanbasNavigation from "./Navigation";
+import { Route, Routes, Navigate } from "react-router";
 import Dashboard from "./Dashboard";
+import KanbasNavigation from "./Navigation";
 import Courses from "./Courses";
-import * as db from "./Database";
-import { useState } from "react";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "./styles.css";
+import * as client from "./Courses/client";
+import { useEffect, useState } from "react";
 import store from "./store";
 import { Provider } from "react-redux";
-import Editor from "./Courses/Assignments/Editor"; // Import Editor component
 
 export default function Kanbas() {
-  const [courses, setCourses] = useState<any[]>(db.courses);
+  const [courses, setCourses] = useState<any[]>([]);
+  const fetchCourses = async () => {
+    const courses = await client.fetchAllCourses();
+    setCourses(courses);
+  };
+  useEffect(() => {
+    fetchCourses();
+  }, []);
+
   const [course, setCourse] = useState<any>({
-    _id: "1234", name: "New Course", number: "New Number",
-    startDate: "2023-09-10", endDate: "2023-12-15", description: "New Description",
+    _id: "1234",
+    name: "New Course",
+    number: "New Number",
+    startDate: "2023-09-10",
+    endDate: "2023-12-15",
+    description: "New Description",
+    image: "reactjs.jpeg"
   });
 
-  const addNewCourse = () => {
-    setCourses([...courses, { ...course, _id: new Date().getTime().toString() }]);
+  const addNewCourse = async () => {
+    const newCourse = await client.createCourse(course);
+    setCourses([ ...courses, newCourse ]);
   };
 
-  const deleteCourse = (courseId: any) => {
-    setCourses(courses.filter((course) => course._id !== courseId));
+  const deleteCourse = async (courseId: string) => {
+    await client.deleteCourse(courseId);
+    setCourses(courses.filter(
+      (c) => c._id !== courseId));
   };
 
-  const updateCourse = () => {
+  const updateCourse = async () => {
+    await client.updateCourse(course);
     setCourses(
       courses.map((c) => {
         if (c._id === course._id) {
@@ -37,39 +52,42 @@ export default function Kanbas() {
     );
   };
 
+
   return (
     <Provider store={store}>
       <div id="wd-kanbas" className="h-100">
-        <div className="d-flex h-100">
+        {/* <h1>Kanbas</h1> */}
+        <div className="d-flex flex-row h-100">
           <div className="d-none d-md-block bg-black">
             <KanbasNavigation />
           </div>
-          <div className="flex-fill p-4">
+          <div className="flex-fill p-4 overflow-auto">
+            <div className="d-block d-md-none">
+
+            </div>
             <Routes>
               <Route path="/" element={<Navigate to="Dashboard" />} />
-              <Route path="Account" element={<h1>Account</h1>} />
-              <Route path="Dashboard" element={
-                <Dashboard
-                  courses={courses}
-                  course={course}
-                  setCourse={setCourse}
-                  addNewCourse={addNewCourse}
-                  deleteCourse={deleteCourse}
-                  updateCourse={updateCourse} />
-              } />
-              <Route path="Courses/:cid/*" element={<CoursesWrapper courses={courses} />} />
-              <Route path="Courses/:cid/Assignments/New" element={<Editor />} />
-              <Route path="Courses/:cid/Assignments/:aid/Editor" element={<Editor />} />
-              <Route path="Calendar" element={<h1>Calendar</h1>} />
-              <Route path="Inbox" element={<h1>Inbox</h1>} />
+              <Route
+                path="Dashboard"
+                element={
+                  <Dashboard
+                    courses={courses}
+                    course={course}
+                    setCourse={setCourse}
+                    addNewCourse={addNewCourse}
+                    deleteCourse={deleteCourse}
+                    updateCourse={updateCourse}
+                  />
+                }
+              />
+              <Route
+                path="Courses/:cid/*"
+                element={<Courses courses={courses} />}
+              />
             </Routes>
           </div>
         </div>
       </div>
     </Provider>
   );
-}
-
-function CoursesWrapper({ courses }: { courses: any[] }) {
-  return <Courses courses={courses} />;
 }
