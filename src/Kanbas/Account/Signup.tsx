@@ -1,3 +1,5 @@
+// src/Kanbas/Account/Signup.tsx
+
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setCurrentUser } from "./reducer";
@@ -16,7 +18,8 @@ export default function Signup() {
       dispatch(setCurrentUser(currentUser));
       navigate("/Kanbas/Account/Profile");
     } catch (err: any) {
-      setError(err.response.data.message);
+      console.error("Error during signup:", err);
+      setError(err.message || "An error occurred during signup.");
     }
   };
 
