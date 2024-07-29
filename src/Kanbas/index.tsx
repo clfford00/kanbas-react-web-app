@@ -7,6 +7,7 @@ import * as client from "./Courses/client";
 import { useEffect, useState } from "react";
 import store from "./store";
 import { Provider } from "react-redux";
+import Account from "./Account";
 
 export default function Kanbas() {
   const [courses, setCourses] = useState<any[]>([]);
@@ -84,6 +85,7 @@ export default function Kanbas() {
                 path="Courses/:cid/*"
                 element={<Courses courses={courses} />}
               />
+              <Route path="/Account/*" element={<Account />} />
             </Routes>
           </div>
         </div>
