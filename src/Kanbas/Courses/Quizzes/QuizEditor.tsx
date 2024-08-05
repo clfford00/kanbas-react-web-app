@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateQuiz, addQuiz } from './reducer';
 import * as client from './client';
-import 'react-quill/dist/quill.snow.css'; // import styles for react-quill
+import 'react-quill/dist/quill.snow.css';
 import ReactQuill from 'react-quill';
 
 export default function QuizEditor() {

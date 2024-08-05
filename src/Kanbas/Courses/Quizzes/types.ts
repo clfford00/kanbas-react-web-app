@@ -1,9 +1,8 @@
-// src/types/index.ts
 export interface Quiz {
     _id: string;
     name: string;
-    description: string; // Add this property
-    course: string; // Add this property
+    description: string;
+    course: string;
     quizType: string;
     points: number;
     assignmentGroup: string;

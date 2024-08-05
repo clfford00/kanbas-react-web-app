@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Quiz } from './types'; // Adjust the path as necessary
-import './QuizDetails.css'; // Adjust the path as necessary
+import { Quiz } from './types';
+import './QuizDetails.css';
 
 const QuizDetails: React.FC = () => {
     const { qid } = useParams<{ qid: string }>();
