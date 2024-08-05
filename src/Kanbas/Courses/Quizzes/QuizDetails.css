@@ -1,0 +1,20 @@
+.quiz-details {
+    font-size: 1rem;
+}
+
+.quiz-details h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.quiz-details p {
+    margin-bottom: 10px;
+}
+
+.quiz-details .btn-outline-secondary {
+    margin-right: 10px;
+}
+
+.quiz-details .btn-primary {
+    margin-right: 10px;
+}
